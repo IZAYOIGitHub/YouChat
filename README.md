@@ -7,7 +7,8 @@
   - IP：60.205.205.99
   - 用户：root
   - ssh口令：YouChat233
-- VIM+GCC+GDB+makefile
+- 云端开发工具：VIM+GCC+GDB+make
+- 数据库：MySQL
 
 
 ### 客户端
