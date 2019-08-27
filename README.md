@@ -1,19 +1,9 @@
 # YouChat即时通讯聊天室
-> BIT CS 2019 小学期项目
+> BIT CS 2019 小学期项目 —— 年轻人的第一个聊天室
 
-### 服务端
-- VPS
-  - 系统镜像：Ubuntu16.04
-  - IP：60.205.205.99
-  - 用户：root
-  - ssh口令：YouChat233
-- 云端开发工具：VIM+GCC+GDB+make
-- 数据库：MySQL
-
-
-### 客户端
-- GTK开发GUI
-- UI
-  - 登录界面
-  - 通讯录界面
-  - 会话界面
+### 项目架构
+- /
+  - server: 服务器功能实现
+  - client: 客户端功能实现
+  - gtk: UI实现
+  - common: 通用函数动态链接库
