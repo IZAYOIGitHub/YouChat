@@ -27,12 +27,10 @@ void udp_message_send(int fd, struct sockaddr* destination){
 
 	sleep(0.1);
     while(1){
-        printf("client:");
+        printf("local:");
         scanf("%s", buffer);
         sendto(fd, buffer, BUFFER_SIZE, 0, destination, length);
         memset(buffer, 0, BUFFER_SIZE);
-        recvfrom(fd, buffer, BUFFER_SIZE, 0, (struct sockaddr*)&source, &length);
-        printf("%s\n\n",buffer);
     }
 
 }
@@ -51,10 +49,7 @@ void udp_message_receive(int fd){
             printf("recieve data fail!\n");
             return 0;
         }
-        printf("client:%s\n",buffer);
-        memset(buffer, 0, BUFFER_SIZE);
-        sprintf(buffer, "The remote has recieved your message!\n");
-        sendto(fd, buffer, BUFFER_SIZE, 0, (struct sockaddr*)&remote_address, length);
+        printf("remote:%s\n",buffer);
     }
 
 }
@@ -138,9 +133,9 @@ int main(int argc, char* argv[]){
     puts("\n\n>========== YouChat version beta 1 is running exhaustively! ==========<\n\n");
 
     pthread_t send_message_thread;
-    if(pthread_create(&send_message_thread, NULL, send_message_thread_function, (void*)&sys_arg) == 0)    puts("sender's thread is created successfully!\n");
+    pthread_create(&send_message_thread, NULL, send_message_thread_function, (void*)&sys_arg);
     pthread_t receive_message_thread;
-    if(pthread_create(&receive_message_thread, NULL, receive_message_thread_function, (void*)&sys_arg) == 0)    puts("receiver's thread is created successfully!\n");
+    pthread_create(&receive_message_thread, NULL, receive_message_thread_function, (void*)&sys_arg);
 
     int send_message_thread_return, receive_message_thread_return;
     pthread_join(send_message_thread, &send_message_thread_return);

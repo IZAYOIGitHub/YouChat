@@ -1,11 +1,9 @@
-#include "common.h"
-
 typedef struct destination{
 	char* IP_address;
 	int port;
 }DESTINATION;
 
 typedef struct accountandmessage{
-	char* Account;
-	char* Message;
-}AccountAndMessage;
+	char account[20];
+	char message[1024];
+}ACCOUNT_MESSAGE;

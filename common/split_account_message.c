@@ -1,5 +1,3 @@
-#include "common.h"
-
 void split_message(char* origin_message,AccountAndMessage* A_M)
 {
     int origin_size = strlen(origin_message);
