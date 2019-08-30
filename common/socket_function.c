@@ -1,6 +1,6 @@
 #include "common.h"
 
-CONNECTION* udp_set_connection(DESTINATION* destination){
+CONNECTION* udp_set_send_connection(DESTINATION* destination){
 
 	CONNECTION* udp_connection = malloc(sizeof(CONNECTION));
 
