@@ -25,6 +25,7 @@ void udp_message_send(int fd, struct sockaddr* destination){
     struct sockaddr_in source;
     char buffer[BUFFER_SIZE];
 
+	sleep(0.1);
     while(1){
         printf("client:");
         scanf("%s", buffer);
