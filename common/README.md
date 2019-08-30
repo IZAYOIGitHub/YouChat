@@ -1,9 +1,10 @@
-# YouChat即时通讯聊天室
-> BIT CS 2019 小学期项目 —— 年轻人的第一个聊天室
+# common
+> 存放全项目通用的代码
 
-### 项目架构
-- /
-  - server: 服务器功能实现
-  - client: 客户端功能实现
-  - gtk: UI实现
-  - common: 通用函数动态链接库
+### file
+- common.h
+  - 全项目通用的头文件
+- struct.h
+  - 定义全项目通用的结构体
+- socket_function.c
+  - 实现socket通讯基本功能API
