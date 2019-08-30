@@ -5,3 +5,7 @@ typedef struct destination{
 	int port;
 }DESTINATION;
 
+typedef struct accountandmessage{
+	char* Account;
+	char* Message;
+}AccountAndMessage;
