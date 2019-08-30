@@ -49,7 +49,7 @@ void udp_message_receive(int fd){
             printf("recieve data fail!\n");
             return 0;
         }
-        printf("remote:%s\n",buffer);
+        printf("\nremote:%s\nlocal:",buffer);
     }
 
 }
