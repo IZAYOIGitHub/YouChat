@@ -5,7 +5,3 @@ typedef struct destination{
 	int port;
 }DESTINATION;
 
-typedef struct connection{
-	int socket_fd;
-	struct sockaddr_in destination_info;
-}CONNECTION;
