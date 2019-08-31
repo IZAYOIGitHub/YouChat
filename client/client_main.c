@@ -29,7 +29,7 @@ int main(int argc, char* argv[]){
 	scanf("%s", server.IP_address);
 	scanf("%d", server.port);
 
-	regist(*server);
+	regist(&server);
 	
 	pthread_t send_message_thread;
     pthread_create(&send_message_thread, NULL, client_send_message_udp_thread, (void*)*server);

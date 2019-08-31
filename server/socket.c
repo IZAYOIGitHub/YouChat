@@ -1,9 +1,9 @@
-int server_receive_message_send_tcp(){ // once executed, always listening
+int server_receive_message_send_tcp(REGISTER_ADDR* register_user){ // once executed, always listening
 
 	int  listen_socket_fd, connection_fd;
-	struct sockaddr_in  local_info;
+	struct sockaddr_in  local_info, destination_info;
 	char buffer[1024];
-	int receive_message_length;
+	int receive_message_length, destination_addr_size;
 
 	if( (listen_socket_fd = socket(AF_INET, SOCK_STREAM, 0)) == -1 ){   
 		printf("create socket error: %s(errno: %d)\n",strerror(errno),errno);
@@ -27,16 +27,23 @@ int server_receive_message_send_tcp(){ // once executed, always listening
 
 	while(1){
 		memset(buffer, 0, 1024);
-		if( (connection_fd = accept(listen_socket_fd, NULL, NULL)) == -1){   
+		if( (connection_fd = accept(listen_socket_fd, (struct sockaddr*)&destination_info, &destination_addr_size)) == -1){   
 			printf("accept socket error: %s(errno: %d)",strerror(errno),errno);
 			continue;
 		}
 		recv(connection_fd, buffer, 1024, 0);
 
 		ACCOUNT_MESSAGE accout_message;
-		split_message(buffer, &accout_message);
-		DESTINATION* client_2 = account_to_destination_info(accout_message.accout);
-		send_message_tcp(client_2, accout_message.message);
+		if (!split_message(buffer, &accout_message))
+		{
+			register_users->account_address[register_users->num].remote_addr = remote_info;
+			strncpy(register_users->account_address[register_users->num++].account, buffer, strlen(buffer) + 1);
+		}
+		else {
+			struct sockaddr_in  client_2;
+			account_to_destination_info(accout_message.accout, register_user, &client);
+			send_message_udp(client_2, accout_message.message);
+		}
 
 		close(connection_fd);
 	}
@@ -45,7 +52,7 @@ int server_receive_message_send_tcp(){ // once executed, always listening
 }
 
 
-int server_receive_message_send_udp(){  // once executed, always listening
+int server_receive_message_send_udp(REGISTER_ADDR* register_users){  // once executed, always listening
 
 	int listen_socket_fd;
 	struct sockaddr_in local_info, remote_info; 
@@ -70,17 +77,23 @@ int server_receive_message_send_udp(){  // once executed, always listening
 
 	while(1){
 		memset(buffer, 0, 1024);
-		if((recvfrom(listen_socket_fd, buffer, 1024, 0, NULL, NULL)) == -1){
+		if((recvfrom(listen_socket_fd, buffer, 1024, 0, (struct sockaddr*)&remote_info, &length)) == -1){
 			printf("recieve data fail!\n");
 			return 0;
 		}
 
 		ACCOUNT_MESSAGE accout_message;
-		split_message(buffer, &accout_message);
-		DESTINATION* client_2 = account_to_destination_info(accout_message.accout);
-		send_message_udp(client_2, accout_message.message);
-
-    	}
+		if (!split_message(buffer, &accout_message))
+		{
+			register_users->account_address[register_users->num].remote_addr = remote_info;
+			strncpy(register_users->account_address[register_users->num++].account, buffer, strlen(buffer) + 1);
+		}
+		else {
+			struct sockaddr_in client_2;
+			account_to_destination_info(accout_message.accout, register_users, &client_2);
+			send_message_udp(client_2, accout_message.message);
+		}
+    }
 
 	close(listen_socket_fd);
 	return 0;
