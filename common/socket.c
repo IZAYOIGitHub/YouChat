@@ -1,3 +1,5 @@
+#include "common.h"
+
 int send_message_udp(DESTINATION* destination, char* message_buffer){ // execute once, send message once
 
 	int send_socket_fd;
@@ -19,6 +21,7 @@ int send_message_udp(DESTINATION* destination, char* message_buffer){ // execute
         	return 0;
 	}
 
+	close(send_socket_fd);
 	return 1;
 }
 
@@ -49,6 +52,7 @@ int send_message_tcp(DESTINATION* destination, char* message_buffer){ // execute
 		printf("send message error: %s(errno: %d)\n", strerror(errno), errno);
 		return 0;
 	}
-
+	
+	close(send_socket_fd);
 	return 1;
 }
