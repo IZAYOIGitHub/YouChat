@@ -22,7 +22,6 @@
 #include<netinet/in.h>
 #include<sys/socket.h>
 #include<arpa/inet.h>
-#include "struct.h"
 
 #define BUFFER_SIZE 1024
 #define ACCOUNT_NUMBER 250
