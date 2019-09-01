@@ -1,29 +1,28 @@
 #include "common.h"
 
-void server_receive_message_send_udp_thread(void* regist_addr)
-{
-	REGISTER_ADDR* all_addr = (REGISTER_ADDR*)regist_addr;
-	server_receive_message_send_udp(all_addr);
-}
+#define handle_regist_request_PORT 23332;
+#define handle_sign_in_request_PORT 23333;
+#define transmit_single_chat_message_PORT 23334;
 
-void server_receive_message_send_tcp_thread(void* regist_addr)
-{
-	REGISTER_ADDR* all_addr = (REGISTER_ADDR*)regist_addr;
-	server_receive_message_send_tcp(all_addr);
-}
+void handle_regist_request();
+void handle_sign_in_request();
+void transmit_single_chat_message();
 
 int main(int argc, char* argv[]){
 	puts("\n\n>========== YouChat server version beta 1 is running exhaustively! ==========<\n\n");
 
-	REGISTER_ADDR register_user;
-	register_user.num = 0;
-	pthread_t server_udp_thread;
-	pthread_create(&server_udp_thread, NULL,server_receive_message_send_udp_thread, &register_user);
-	pthread_t server_tcp_thread;
-	pthread_create(&server_tcp_thread, NULL,server_receive_message_send_tcp_thread, &register_user);
+	pthread_t handle_regist_request_thread, handle_sign_in_request_thread, transmit_single_chat_message_thread;
+	pthread_create(&handle_regist_request_thread, NULL,handle_regist_request , NULL);
+	pthread_create(&handle_sign_in_request_thread, NULL,handle_sign_in_request , NULL);
+	pthread_create(&transmit_single_chat_message_thread, NULL,transmit_single_chat_message , NULL);
 	
-	int udp_return, tcp_return;
-	pthread_join(server_udp_thread, &udp_return);
-	pthread_join(server_tcp_thread, &tcp_return);
+	pthread_join(handle_regist_request_thread, NULL);
+	pthread_join(handle_sign_in_request_thread, NULL);
+	pthread_join(transmit_single_chat_message_thread, NULL);
+
+	return 0;
 }
 
+void handle_regist_request(){
+	
+}

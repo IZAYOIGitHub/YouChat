@@ -5,16 +5,9 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 
-#define LOCAL_PORT 2334
-#define REMOTE_PORT 2333
+#define LOCAL_PORT 23333
+#define REMOTE_PORT 23333
 #define BUFFER_SIZE 1024
-
-
-
-typedef struct sys_arg_{
-    int sys_argc;
-    char* sys_argv1;
-}ARG;
 
 
 
@@ -25,13 +18,33 @@ void udp_message_send(int fd, struct sockaddr* destination){
     struct sockaddr_in source;
     char buffer[BUFFER_SIZE];
 
-	sleep(0.1);
     while(1){
-        printf("local:");
         scanf("%s", buffer);
         sendto(fd, buffer, BUFFER_SIZE, 0, destination, length);
         memset(buffer, 0, BUFFER_SIZE);
     }
+
+}
+void* send_message_thread_function(void* destination_IP){
+
+    int local_socket_fd;
+    struct sockaddr_in remote_address;
+
+    local_socket_fd = socket(AF_INET, SOCK_DGRAM, 0);
+    if(local_socket_fd < 0){
+        printf("create socket fail!\n");
+        return -1;
+    }
+
+    memset(&remote_address, 0, sizeof(remote_address));
+    remote_address.sin_family = AF_INET;
+    remote_address.sin_addr.s_addr = inet_addr((char*)destination_IP);
+    remote_address.sin_port = htons(REMOTE_PORT); 
+
+    udp_message_send(local_socket_fd, (struct sockaddr*)&remote_address);
+
+    close(local_socket_fd);
+    return 0;
 
 }
 
@@ -49,47 +62,11 @@ void udp_message_receive(int fd){
             printf("recieve data fail!\n");
             return 0;
         }
-        printf("\nremote:%s\nlocal:",buffer);
+        printf("%s\n",buffer);
     }
 
 }
-
-
-
-void* send_message_thread_function(void *arg_){
-
-    ARG* arg = (ARG*)arg_;
-    int argc = arg->sys_argc;
-    char* argv1 = arg->sys_argv1;
-
-    int local_socket_fd;
-    struct sockaddr_in remote_address;
-
-    local_socket_fd = socket(AF_INET, SOCK_DGRAM, 0);
-    if(local_socket_fd < 0){
-        printf("create socket fail!\n");
-        return -1;
-    }
-
-    memset(&remote_address, 0, sizeof(remote_address));
-    remote_address.sin_family = AF_INET;
-    remote_address.sin_addr.s_addr = inet_addr(argv1);
-    remote_address.sin_port = htons(REMOTE_PORT); 
-
-    udp_message_send(local_socket_fd, (struct sockaddr*)&remote_address);
-
-    close(local_socket_fd);
-    return 0;
-
-}
-
-
-
-void* receive_message_thread_function(void* arg_){
-
-    ARG* arg = (ARG*)arg_;
-    int argc = arg->sys_argc;
-    char* argv1 = arg->sys_argv1;
+void* receive_message_thread_function(){
 
     int local_socket_fd;
     struct sockaddr_in local_address; 
@@ -121,21 +98,15 @@ void* receive_message_thread_function(void* arg_){
 
 int main(int argc, char* argv[]){
 
-    if(argc != 2){
-        puts("usage: ./youchat <destination's IP address>");
-        return 0;
-    }
-
-    ARG sys_arg;
-    sys_arg.sys_argc = argc;
-    sys_arg.sys_argv1 = &argv[1];
-
+    char IP[15] = {'\0'};
     puts("\n\n>========== YouChat version beta 1 is running exhaustively! ==========<\n\n");
+	puts("Input destination IP:");
+	scanf("%s", IP);
 
     pthread_t send_message_thread;
-    pthread_create(&send_message_thread, NULL, send_message_thread_function, (void*)&sys_arg);
+    pthread_create(&send_message_thread, NULL, send_message_thread_function, (void*)&IP);
     pthread_t receive_message_thread;
-    pthread_create(&receive_message_thread, NULL, receive_message_thread_function, (void*)&sys_arg);
+    pthread_create(&receive_message_thread, NULL, receive_message_thread_function, NULL);
 
     int send_message_thread_return, receive_message_thread_return;
     pthread_join(send_message_thread, &send_message_thread_return);
