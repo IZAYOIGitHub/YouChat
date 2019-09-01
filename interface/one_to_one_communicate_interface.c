@@ -39,7 +39,8 @@ void udp_message_send(int fd, struct sockaddr* destination, char* remote_account
     while(1){
         scanf("%s",message);
         cJSON* json =  cJSON_CreateObject();
-        cJSON_AddStringToObject(json, "account", remote_account);
+        cJSON_AddStringToObject（json,"source_account", source_account);
+        cJSON_AddStringToObject(json, "remote_account", remote_account);
         cJSON_AddStringToObject(json, "message", message);
         char* buffer = cJSON_Print(json);
         sendto(fd, buffer, BUFFER_SIZE, 0, destination, length);
@@ -71,8 +72,6 @@ void* send_message_thread_function(void*  remote_account){
 
 }
 
-
-
 void udp_message_receive(int fd){
 
     char buffer[BUFFER_SIZE];
@@ -85,10 +84,17 @@ void udp_message_receive(int fd){
             printf("recieve data fail!\n");
             return 0;
         }
-        printf("%s\n",buffer);
+        cJSON* json = cJSON_Parse(buffer);
+        cJSON* json_source_account = cJSON_GetObjectIterm(json,"source_account");
+        cJSON* json_message = cJSON_GetObjectIterm(json, "meesage");
+        char* message, * source_account;
+        strcmp(source_account, json_source_account->valuestring);
+        strcmp(message, json_message->valuestring);
     }
 
 }
+
+
 void* receive_message_thread_function(){
 
     int local_socket_fd;
@@ -116,7 +122,6 @@ void* receive_message_thread_function(){
     return 0;
 
 }
-
 
 
 one_to_one_communicate_interface(char* remote_account)
