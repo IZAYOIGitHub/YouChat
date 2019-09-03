@@ -21,16 +21,18 @@ void* send_message_udp(char* buffer){
         printf("create socket fail!\n");
         return;
     }
+	cJSON* json_data = cJSON_Parse(buffer);
+	cJSON* json_username = cJSON_GetObjectItem(json_data, "username");
+	cJSON* json_message = cJSON_GetObjectItem(json_data, "message");
+    for(i=1; i<=account_num; i++){
+		if(strcmp(account_table[i].username, json_username->valuestring) == 0){
+			remote_info = account_table[i].remote_info;
+            break;
+		}
+	} 
 
-    char destination_IP[15] = {'\0'};
-    puts("Input destination's IP:");
-    scanf("%s", destination_IP);
-
-    memset(&remote_info, 0, sizeof(remote_info));
-    remote_info.sin_family = AF_INET;
-    remote_info.sin_addr.s_addr = inet_addr(destination_IP);
-    remote_info.sin_port = htons(REMOTE_PORT); 
-
+    memset(buffer, 0, sizeof(buffer));
+    strcpy(buffer, json_message->valuestring);
     struct sockaddr* destination = (struct sockaddr*)&remote_info;
     socklen_t length = sizeof(*destination);
     sendto(local_socket_fd, buffer, BUFFER_SIZE, 0, destination, length);

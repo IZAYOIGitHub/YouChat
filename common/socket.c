@@ -17,11 +17,11 @@ void send_message_udp(struct sockaddr* destination_info_pointer,char* message_bu
 	// destination_info.sin_port = htons(destination->port);
     int send_socket_fd;
     socklen_t len;
-    send_socket_fd = socket(AF_INET, SOCK_STREAM, 0);
-    if(fd < 0)
+    send_socket_fd = socket(AF_INET, SOCK_DGRAM, 0);
+    if(send_socket_fd < 0)
     {
         printf("create socket fail!\n");
-        return -1;
+        return ;
     }
     len = sizeof(*destination_info_pointer);
     printf("client:%s\n",message_buffer);  //打印自己发送的信息
@@ -84,7 +84,7 @@ int client_receive_message_udp(){  // once executed, always listening
 	return 0;
 }
 
-int server_receive_message_send_udp(){  // once executed, always listening
+int server_receive_udp(){  // once executed, always listening
 
 	int listen_socket_fd;
 	struct sockaddr_in local_info, remote_info; 
