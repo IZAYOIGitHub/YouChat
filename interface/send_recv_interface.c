@@ -67,7 +67,7 @@ void tcp_message_receive()
         char* source_account = json_source->valuestring;
         char* message = json_message->valuestring;
         UpdateContactList((gchar*)source_account, (gchar*)message);
-        PrintNewMsg( (gchar*)source_account,(gchar*)message,(gchar* time)));
+        PrintNewMsg( (gchar*)source_account,(gchar*)message,(gchar*) time);
     }
 }
 
