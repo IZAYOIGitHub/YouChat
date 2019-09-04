@@ -18,29 +18,28 @@ GtkTreeStore *contactListStore = NULL;
 #pragma region 对接接口函数
 //临时声明的函数，由其他人实现
 //启动监听新消息线程
-void create_receive_thread(void)
+void create_receive_thread(void);/*
 {
     g_print("create_receive_thread()\n");
     return;
-}
+}*/
 
-#ifndef CHAT_H
+
 //临时声明的函数，由其他人实现
 //打开聊天窗口
-int OpenChatWin(const char *tgtId)
+int OpenChatWin(const char *tgtId);/*
 {
     printf("Begining talk with ID %s\n", tgtId);
     return 0;
-}
-#endif
+}*/
 
 //临时声明的函数，由其他人实现
 //打开“新聊天”对话框
-int ShowWindow(void)
+int ShowWindow(void);/*
 {
     g_print("Opening window to create a new chat\n");
     return 0;
-}
+}*/
 
 #pragma endregion 这些函数由别人实现，这里暂时用打印相关信息代替
 
