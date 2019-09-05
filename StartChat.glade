@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.18.3 -->
+<interface>
+  <requires lib="gtk+" version="3.12"/>
+  <object class="GtkWindow" id="window_start">
+    <property name="width_request">440</property>
+    <property name="height_request">250</property>
+    <property name="can_focus">False</property>
+    <child>
+      <object class="GtkFixed" id="fixed_StartChat">
+        <property name="width_request">100</property>
+        <property name="height_request">80</property>
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <child>
+          <object class="GtkEntry" id="entry_userid">
+            <property name="width_request">200</property>
+            <property name="height_request">80</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+          </object>
+          <packing>
+            <property name="x">140</property>
+            <property name="y">60</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="button_start">
+            <property name="label" translatable="yes">开始聊天</property>
+            <property name="width_request">100</property>
+            <property name="height_request">60</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <property name="halign">baseline</property>
+            <property name="valign">baseline</property>
+          </object>
+          <packing>
+            <property name="x">170</property>
+            <property name="y">150</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="label_user">
+            <property name="width_request">100</property>
+            <property name="height_request">80</property>
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="opacity">0.95999999999999996</property>
+            <property name="label" translatable="yes">用户id:</property>
+          </object>
+          <packing>
+            <property name="x">47</property>
+            <property name="y">60</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
+</interface>
