@@ -22,6 +22,10 @@
 #include<netinet/in.h>
 #include<sys/socket.h>
 #include<arpa/inet.h>
+#include<mysql/mysql.h>
 
 #define BUFFER_SIZE 1024
-#define ACCOUNT_NUMBER 250
+
+//time;
+void string_formater(int source, char *dest);
+void time_now_to_string(char *timestamp_now);
