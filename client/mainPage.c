@@ -18,16 +18,15 @@ GtkTreeStore *contactListStore = NULL;
 #pragma region 对接接口函数
 //临时声明的函数，由其他人实现
 //启动监听新消息线程
-void create_receive_thread(void);/*
+void create_receive_thread(void); /*
 {
     g_print("create_receive_thread()\n");
     return;
 }*/
 
-
 //临时声明的函数，由其他人实现
 //打开聊天窗口
-int OpenChatWin(const char *tgtId);/*
+int OpenChatWin(const char *tgtId); /*
 {
     printf("Begining talk with ID %s\n", tgtId);
     return 0;
@@ -35,11 +34,13 @@ int OpenChatWin(const char *tgtId);/*
 
 //临时声明的函数，由其他人实现
 //打开“新聊天”对话框
-int ShowWindow(void);/*
+int ShowWindow(void); /*
 {
     g_print("Opening window to create a new chat\n");
     return 0;
 }*/
+
+int logout(void);
 
 #pragma endregion 这些函数由别人实现，这里暂时用打印相关信息代替
 
@@ -61,6 +62,13 @@ void OnNewChatClicked(GtkWidget *widget, gpointer data)
     return;
 }
 
+void OnMainPageExit(GtkWidget *widget, gpointer data)
+{
+    logout();
+    gtk_main_quit();
+    return;
+}
+
 GtkWidget *OpenMainPage(void)
 {
     //准备窗口
@@ -74,6 +82,7 @@ GtkWidget *OpenMainPage(void)
     }
     GtkWidget *window;
     window = GTK_WIDGET(gtk_builder_get_object(builder, windowName));
+    gtk_window_set_title(GTK_WINDOW(window),"YouChat 主界面");
     if (!window)
     {
         g_error("Fatal: Failed to get window from main.glade\n");
@@ -93,7 +102,7 @@ GtkWidget *OpenMainPage(void)
     column = gtk_tree_view_column_new_with_attributes("ID", renderer, "text", 1, NULL);
     gtk_tree_view_append_column(GTK_TREE_VIEW(contactListView), column);
 
-    g_signal_connect(G_OBJECT(window), "destroy", G_CALLBACK(gtk_main_quit), NULL);
+    g_signal_connect(G_OBJECT(window), "destroy", G_CALLBACK(OnMainPageExit), NULL);
     g_signal_connect(G_OBJECT(contactListView), "row-activated", G_CALLBACK(OnContactActivate), NULL);
 
     GObject *btnNewChat;
